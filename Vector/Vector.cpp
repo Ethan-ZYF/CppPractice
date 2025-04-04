@@ -9,7 +9,6 @@
 #include <stdexcept>
 #include <type_traits>
 #include <utility>
-#include <vector>
 
 template <class _Tp, class _Alloc = std::allocator<_Tp>>
 class Vector {
