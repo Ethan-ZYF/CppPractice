@@ -23,4 +23,4 @@ class Channel {
     bool getInEpoll();
     void setInEpoll();
     void setRevents(uint32_t);
-}
+};

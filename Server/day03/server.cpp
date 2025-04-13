@@ -49,7 +49,8 @@ int main() {
     serv_sock->listen();
     Epoll* ep = new Epoll();
     serv_sock->setnonblocking();
-    ep->addFd(serv_sock->getFd(), EPOLLIN | EPOLLET);
+    Channel *servChannel = new Channel(ep, serv_sock->getFd());
+    servChannel->enableReading();
     while (true) {
         std::vector<Channel*> activeChannels = ep->poll();
         int nfds = activeChannels.size();
@@ -63,8 +64,8 @@ int main() {
                 clnt_sock->setnonblocking();
                 Channel* clntChannel = new Channel(ep, clnt_sock->getFd());
                 clntChannel->enableReading();
-            } else if (events[i].events & EPOLLIN) {  //可读事件
-                handleReadEvent(chfd);
+            } else if (activeChannels[i]->getRevents() & EPOLLIN) {  //可读事件
+                handleReadEvent(activeChannels[i]->getFd());
             } else {  //其他事件，之后的版本实现
                 printf("something else happened\n");
             }

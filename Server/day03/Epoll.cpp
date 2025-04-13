@@ -30,7 +30,7 @@ void Epoll::addFd(int fd, uint32_t op) {
 }
 
 std::vector<Channel*> Epoll::poll(int timeout) {
-    std::vector<Channel> activeChannels;
+    std::vector<Channel*> activeChannels;
     int nfds = epoll_wait(epfd, events, MAX_EVENTS, timeout);
     errif(nfds == -1, "epoll wait error");
     for (int i = 0; i < nfds; ++i) {
